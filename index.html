@@ -12,20 +12,26 @@
   .header h1{font-size:22px;font-weight:600;margin-bottom:4px}
   .header p{font-size:13px;opacity:.8}
   .container{max-width:980px;margin:0 auto;padding:24px 16px}
+  .unit-banner{background:#1B3A5C;color:white;text-align:center;padding:8px 0;border-radius:6px;font-size:14px;font-weight:600;margin-bottom:18px;letter-spacing:1px}
   .tabs{display:flex;gap:6px;margin-bottom:20px;border-bottom:2px solid #D0D7E2}
   .tab{padding:9px 22px;font-size:13px;font-weight:500;border:1px solid #D0D7E2;border-bottom:none;
        border-radius:6px 6px 0 0;cursor:pointer;background:#EEF1F6;color:#5A6A7E;transition:all .15s}
   .tab.active{background:white;color:#1B3A5C;font-weight:600}
+  .tab.has-alert{border-color:#E24B4A}
   .alert-badge{display:inline-block;background:#E24B4A;color:white;border-radius:50%;width:20px;height:20px;
                font-size:12px;font-weight:700;line-height:20px;text-align:center;margin-left:6px;vertical-align:middle}
-  .tab.has-alert{border-color:#E24B4A}
   .panel{display:none}.panel.active{display:block}
   .alert-bar{border-radius:8px;padding:13px 18px;margin-bottom:14px;font-size:17px;font-weight:500}
   .gap-bar{border-radius:8px;padding:13px 18px;margin-bottom:16px;font-size:17px;
            background:#FCEBEB;color:#A32D2D;border:1px solid #F7C1C1;display:none}
   .gap-bar.show{display:block}
+  .suggest-box{background:#fff;border:2px solid #E24B4A;border-radius:8px;padding:12px 16px;margin-top:10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .suggest-label{font-size:14px;color:#A32D2D;font-weight:600}
+  .suggest-amount{font-size:24px;color:#A32D2D;font-weight:700}
+  .suggest-formula{font-size:13px;color:#7A8A9E}
   .gap-days{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
   .gap-chip{background:#E24B4A;color:white;border-radius:12px;padding:3px 12px;font-size:14px;font-weight:600}
+  .threshold-info{font-size:13px;color:#5A6A7E;margin-bottom:14px;padding:8px 14px;background:#F0F4F8;border-radius:6px;border-left:3px solid #E24B4A}
   .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
   .kpi{background:white;border-radius:8px;padding:14px 16px;box-shadow:0 1px 3px rgba(0,0,0,.07)}
   .kpi.danger{background:#FCEBEB;border:1px solid #F7C1C1}
@@ -34,15 +40,11 @@
   .kpi-sub{font-size:14px;margin-top:3px;color:#9AA8B8}
   .card{background:white;border-radius:10px;padding:18px 20px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:16px}
   .section-title{font-size:12px;font-weight:600;color:#7A8A9E;margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em}
+  .section-title .unit{font-size:11px;color:#9AA8B8;margin-left:8px;font-weight:400;text-transform:none;letter-spacing:0}
   .chart-wrap{position:relative;width:100%;height:260px}
   .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
   .pie-wrap{position:relative;width:100%;height:185px}
-  .warn-row{display:flex;gap:10px;margin-bottom:16px;align-items:center;flex-wrap:wrap;
-            background:white;border-radius:8px;padding:12px 16px;box-shadow:0 1px 3px rgba(0,0,0,.07)}
-  .warn-row label{font-size:12px;color:#5A6A7E;font-weight:500}
-  .warn-row input[type=range]{width:140px;accent-color:#E24B4A}
-  .warn-row span{font-size:13px;font-weight:600}
-  .legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;font-size:11px;color:#5A6A7E}
+  .legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px;font-size:11px;color:#5A6A7E}
   .legend span{display:flex;align-items:center;gap:4px}
   .legend i{width:11px;height:11px;border-radius:2px;display:inline-block;flex-shrink:0}
   .table-wrap{overflow-x:auto;margin-bottom:0}
@@ -50,13 +52,10 @@
   table th{padding:6px 8px;text-align:center;font-weight:600;white-space:nowrap}
   table td{padding:5px 8px;text-align:right;white-space:nowrap;border-bottom:.5px solid #E8ECF0}
   table td:first-child{text-align:center;font-weight:500}
-  .th-date{background:#1B3A5C;color:#fff}
-  .th-in{background:#185FA5;color:#fff}
-  .th-in-sub{background:#2E6DA4;color:#fff}
-  .th-out{background:#8B1A0A;color:#fff}
-  .th-out-sub{background:#A32D2D;color:#fff}
+  .th-date,.th-bal{background:#1B3A5C;color:#fff}
+  .th-in{background:#185FA5;color:#fff}.th-in-sub{background:#2E6DA4;color:#fff}
+  .th-out{background:#8B1A0A;color:#fff}.th-out-sub{background:#A32D2D;color:#fff}
   .th-net{background:#4A235A;color:#fff}
-  .th-bal{background:#1B3A5C;color:#fff}
   tr.weekend td{background:#F8F9FA}
   tr.total-row td{background:#1B3A5C;color:#fff;font-weight:600}
   td.net-pos{color:#27500A;font-weight:600}
@@ -78,6 +77,8 @@
   <p>民國 115年　4月 ・ 5月　|　每日銀行存款餘額監控</p>
 </div>
 <div class="container">
+  <div class="unit-banner">📊 本儀表板所有金額單位皆為「仟元」</div>
+
   <div class="tabs">
     <div class="tab active" id="tab-apr" onclick="switchTab('apr')">4月</div>
     <div class="tab has-alert" id="tab-may" onclick="switchTab('may')">5月<span class="alert-badge">!</span></div>
@@ -88,35 +89,28 @@
     <div id="alert-apr" class="alert-bar"></div>
     <div id="gap-apr" class="gap-bar"></div>
     <div class="kpis" id="kpis-apr"></div>
-    <div class="warn-row">
-      <label>最低警戒水位：</label>
-      <input type="range" id="sl-low" min="0" max="600000" step="10000" value="100000" oninput="updateAll()">
-      <span id="sv-low" style="color:#E24B4A"></span>
-      <span style="font-size:11px;color:#9AA8B8;margin-left:4px">（拖動滑桿調整）</span>
-    </div>
+    <div class="threshold-info">⚙ 最低警戒水位：<strong>$50,000 仟元</strong>（固定值，作為資金調撥判斷依據）</div>
     <div class="card">
-      <div class="section-title">每日銀行存款餘額趨勢</div>
+      <div class="section-title">每日銀行存款餘額趨勢<span class="unit">（單位：仟元）</span></div>
       <div class="legend">
-        <span><i style="background:#185FA5"></i>正常</span>
-        <span><i style="background:#E67E22"></i>低於警戒</span>
-        <span><i style="background:rgba(180,20,20,0.45);border:1px solid #c01414"></i>資金缺口警示區（低於0）</span>
+        <span><i style="background:rgba(180,20,20,0.45);border:1px solid #c01414"></i>資金缺口警示區</span>
         <span><i style="background:#E24B4A;border-radius:0;width:18px;height:3px"></i>警戒水位</span>
         <span><i style="background:#7B0000;border-radius:0;width:18px;height:3px"></i>零基線</span>
       </div>
       <div class="chart-wrap"><canvas id="chart-apr"></canvas></div>
     </div>
     <div class="card">
-      <div class="section-title">每日收付明細</div>
+      <div class="section-title">每日收付明細<span class="unit">（單位：仟元）</span></div>
       <div class="table-wrap"><table id="tbl-apr"></table></div>
     </div>
     <div class="two-col">
       <div class="card">
-        <div class="section-title">收入來源</div>
+        <div class="section-title">收入來源<span class="unit">（單位：仟元）</span></div>
         <div class="legend" id="leg-apr-in"></div>
         <div class="pie-wrap"><canvas id="pie-apr-in"></canvas></div>
       </div>
       <div class="card">
-        <div class="section-title">支出用途</div>
+        <div class="section-title">支出用途<span class="unit">（單位：仟元）</span></div>
         <div class="legend" id="leg-apr-out"></div>
         <div class="pie-wrap"><canvas id="pie-apr-out"></canvas></div>
       </div>
@@ -128,29 +122,28 @@
     <div id="alert-may" class="alert-bar"></div>
     <div id="gap-may" class="gap-bar"></div>
     <div class="kpis" id="kpis-may"></div>
+    <div class="threshold-info">⚙ 最低警戒水位：<strong>$50,000 仟元</strong>（固定值，作為資金調撥判斷依據）</div>
     <div class="card">
-      <div class="section-title">每日銀行存款餘額趨勢</div>
+      <div class="section-title">每日銀行存款餘額趨勢<span class="unit">（單位：仟元）</span></div>
       <div class="legend">
-        <span><i style="background:#185FA5"></i>正常</span>
-        <span><i style="background:#E67E22"></i>低於警戒</span>
-        <span><i style="background:rgba(180,20,20,0.45);border:1px solid #c01414"></i>資金缺口警示區（低於0）</span>
+        <span><i style="background:rgba(180,20,20,0.45);border:1px solid #c01414"></i>資金缺口警示區</span>
         <span><i style="background:#E24B4A;border-radius:0;width:18px;height:3px"></i>警戒水位</span>
         <span><i style="background:#7B0000;border-radius:0;width:18px;height:3px"></i>零基線</span>
       </div>
       <div class="chart-wrap"><canvas id="chart-may"></canvas></div>
     </div>
     <div class="card">
-      <div class="section-title">每日收付明細</div>
+      <div class="section-title">每日收付明細<span class="unit">（單位：仟元）</span></div>
       <div class="table-wrap"><table id="tbl-may"></table></div>
     </div>
     <div class="two-col">
       <div class="card">
-        <div class="section-title">收入來源</div>
+        <div class="section-title">收入來源<span class="unit">（單位:仟元）</span></div>
         <div class="legend" id="leg-may-in"></div>
         <div class="pie-wrap"><canvas id="pie-may-in"></canvas></div>
       </div>
       <div class="card">
-        <div class="section-title">支出用途</div>
+        <div class="section-title">支出用途<span class="unit">（單位：仟元）</span></div>
         <div class="legend" id="leg-may-out"></div>
         <div class="pie-wrap"><canvas id="pie-may-out"></canvas></div>
       </div>
@@ -159,8 +152,9 @@
 </div>
 
 <script>
-const fmt  = v=>(v<0?'-$':'$')+Math.abs(Math.round(v)).toLocaleString('zh-TW');
-const fmtN = v=>v===0?'—':fmt(v);
+const fmt = v=>(v<0?'-$':'$')+Math.abs(Math.round(v)).toLocaleString('zh-TW');
+const fmtN= v=>v===0?'—':fmt(v);
+const LOW = 50000;
 
 const aprDays    = Array.from({length:30},(_,i)=>i+1);
 const aprWkend   = [false,false,false,true,true,false,false,false,false,false,true,true,false,false,false,false,false,true,true,false,false,false,false,false,true,true,false,false,false,false];
@@ -179,7 +173,7 @@ const outLabels=['一般商品進貨','加熱菸進貨款','EC代付款','其他
 const inColors=['#0D47A1','#1976D2','#64B5F6','#B3E5FC'];
 const outColors=['#BF360C','#E64A19','#FF8A65','#FFCCBC'];
 
-let low=100000,charts={};
+let charts={};
 
 const gapZonePlugin={id:'gapZone',beforeDraw(chart){
   const{ctx,chartArea,scales}=chart;if(!chartArea)return;
@@ -198,19 +192,19 @@ const gapZonePlugin={id:'gapZone',beforeDraw(chart){
 }};
 
 function switchTab(t){['apr','may'].forEach((id,i)=>{document.querySelectorAll('.tab')[i].classList.toggle('active',id===t);document.getElementById('panel-'+id).classList.toggle('active',id===t);});}
-function updateAll(){low=parseInt(document.getElementById('sl-low').value);document.getElementById('sv-low').textContent=fmt(low);buildApr();buildMay();}
-function ptColor(b){return b<0?'#E24B4A':b<low?'#E67E22':'#185FA5';}
+function ptColor(b){return b<0?'#E24B4A':b<LOW?'#E67E22':'#185FA5';}
 
 function buildKpis(id,balance){
   const last=balance[balance.length-1],first=balance[0];
   const maxB=Math.max(...balance),minB=Math.min(...balance);
-  const gapCount=balance.filter(b=>b<0).length;
+  const gapDays=balance.filter(b=>b<0).length;
   const items=[
-    ['月初餘額',fmt(first),'月初',first<0?'#E24B4A':first<low?'#E67E22':'#1B3A5C',false],
-    ['月底餘額',fmt(last),'月底',last<0?'#E24B4A':last<low?'#E67E22':'#1B3A5C',false],
+    ['月初餘額',fmt(first),'月初',first<0?'#E24B4A':first<LOW?'#E67E22':'#1B3A5C',false],
+    ['月底餘額',fmt(last),'月底',last<0?'#E24B4A':last<LOW?'#E67E22':'#1B3A5C',false],
     ['月最高餘額',fmt(maxB),'第'+(balance.indexOf(maxB)+1)+'日','#0D6E30',false],
-    gapCount>0?['資金缺口天數',gapCount+'天','最大缺口 '+fmt(minB),'#A32D2D',true]
-              :['月最低餘額',fmt(minB),'第'+(balance.indexOf(minB)+1)+'日',minB<low?'#E67E22':'#1B3A5C',false],
+    gapDays>0
+      ? ['資金缺口天數',gapDays+'天','需資金調撥','#A32D2D',true]
+      : ['月最低餘額',fmt(minB),'第'+(balance.indexOf(minB)+1)+'日','#1B3A5C',false],
   ];
   document.getElementById(id).innerHTML=items.map(([l,v,d,c,danger])=>
     `<div class="kpi${danger?' danger':''}"><div class="kpi-label">${danger?'⚠ '+l:l}</div><div class="kpi-val" style="color:${c}">${v}</div><div class="kpi-sub">${d}</div></div>`
@@ -220,19 +214,28 @@ function buildKpis(id,balance){
 function buildGapBar(id,balance,days,mLabel){
   const gapDays=days.filter((_,i)=>balance[i]<0);
   const el=document.getElementById(id);
-  if(!gapDays.length){el.classList.remove('show');return;}
+  if(gapDays.length===0){el.classList.remove('show');return;}
   const minB=Math.min(...balance),minDay=balance.indexOf(minB)+1;
+  const suggestAmount = LOW - minB;
   el.classList.add('show');
-  el.innerHTML=`<strong>⚠ 需要資金調度！</strong>　本月共 <strong>${gapDays.length} 天</strong>出現資金缺口，最大缺口 <strong>${fmt(minB)}</strong>（${mLabel}${minDay}日）。建議提前收款或安排短期調度。<div class="gap-days">缺口日期：${gapDays.map(d=>`<span class="gap-chip">${mLabel}${d}日</span>`).join('')}</div>`;
+  let html=`<strong>⚠ 需要資金調度！</strong>　本月共 <strong>${gapDays.length} 天</strong>出現資金缺口（餘額小於 0），最大缺口 <strong>${fmt(minB)}</strong>（${mLabel}${minDay}日）。建議提前收款或安排短期調度。`;
+  html+=`<div class="suggest-box">
+    <span class="suggest-label">💰 建議調撥金額</span>
+    <span class="suggest-amount">${fmt(suggestAmount)}</span>
+    <span class="suggest-formula">＝ 最大缺口 ${fmt(Math.abs(minB))} ＋ 警戒水位 ${fmt(LOW)}</span>
+  </div>`;
+  html+=`<div class="gap-days">缺口日期：${gapDays.map(d=>`<span class="gap-chip">${mLabel}${d}日</span>`).join('')}</div>`;
+  el.innerHTML=html;
 }
 
 function buildAlert(id,balance){
-  const last=balance[balance.length-1],negDays=balance.filter(b=>b<0).length;
+  const last=balance[balance.length-1];
+  const gapCnt=balance.filter(b=>b<0).length;
   let bg,tc,msg;
   if(last<0){bg='#FCEBEB';tc='#A32D2D';msg=`⚠  月底餘額為負數 ${fmt(last)}，資金嚴重不足，需立即調度！`}
-  else if(last<low){bg='#FFF3E0';tc='#BF360C';msg=`注意：月底餘額 ${fmt(last)} 低於警戒水位，建議準備調度。`}
+  else if(last<LOW){bg='#FFF3E0';tc='#BF360C';msg=`月底餘額 ${fmt(last)}（低於警戒水位 ${fmt(LOW)}）。`}
   else{bg='#EAF3DE';tc='#27500A';msg=`月底餘額 ${fmt(last)} 正常。`}
-  if(negDays>0&&last>=0)msg+=`　本月曾出現 ${negDays} 天資金缺口。`;
+  if(gapCnt>0&&last>=0) msg+=`　本月曾出現 ${gapCnt} 天資金缺口。`;
   const el=document.getElementById(id);el.style.background=bg;el.style.color=tc;el.textContent=msg;
 }
 
@@ -241,12 +244,12 @@ function buildTrend(canvasId,days,balance){
   charts[canvasId]=new Chart(document.getElementById(canvasId),{
     type:'line',plugins:[gapZonePlugin],
     data:{labels:days.map(d=>d+'日'),datasets:[
-      {label:'每日餘額',data:balance,borderColor:'#185FA5',backgroundColor:'rgba(24,95,165,0.08)',borderWidth:2,pointBackgroundColor:balance.map(b=>ptColor(b)),pointRadius:balance.map(b=>b<0?5:4),fill:true,tension:0.3},
-      {label:'警戒水位',data:Array(days.length).fill(low),borderColor:'#E24B4A',borderWidth:1.5,borderDash:[6,4],pointRadius:0,fill:false},
+      {label:'每日餘額',data:balance,borderColor:'#185FA5',backgroundColor:'rgba(24,95,165,0.08)',borderWidth:2,pointBackgroundColor:balance.map(b=>ptColor(b)),pointRadius:balance.map(b=>b<0?5:b<LOW?4:3),fill:true,tension:0.3},
+      {label:'警戒水位',data:Array(days.length).fill(LOW),borderColor:'#E24B4A',borderWidth:1.5,borderDash:[6,4],pointRadius:0,fill:false},
       {label:'零基線',data:Array(days.length).fill(0),borderColor:'rgba(123,0,0,0.7)',borderWidth:1.5,borderDash:[3,3],pointRadius:0,fill:false},
     ]},
     options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{if(ctx.datasetIndex>0)return false;const v=ctx.parsed.y;return' '+fmt(v)+(v<0?' 🔴 資金缺口，需調度':v<low?' ⚠ 低於警戒':'');}}}},
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{if(ctx.datasetIndex>0)return false;const v=ctx.parsed.y;return' '+fmt(v)+(v<0?' 🔴 資金缺口，需調度':'');}}}},
       scales:{x:{ticks:{font:{size:10},autoSkip:false,maxRotation:0},grid:{color:'rgba(0,0,0,0.05)'}},y:{ticks:{font:{size:10},callback:v=>fmt(v)},grid:{color:'rgba(0,0,0,0.05)'},afterDataLimits:axis=>{if(axis.min>-50000)axis.min=-120000;}}}
     }
   });
@@ -268,7 +271,7 @@ function buildTable(tblId,days,wkend,balance,inD,outD){
   </tr></thead><tbody>`;
   days.forEach((d,i)=>{
     const bal=balance[i],netV=net[i],isWk=wkend[i];
-    const balClass=bal<0?'gap-cell':bal<low?'warn-cell':'';
+    const balClass=bal<0?'gap-cell':bal<LOW?'warn-cell':'';
     const netClass=netV>0?'net-pos':netV<0?'net-neg':'';
     html+=`<tr class="${isWk?'weekend':''}">
       <td>${d}${isWk?'<br><span style="font-size:9px;color:#9AA8B8">休</span>':''}</td>
@@ -300,8 +303,18 @@ function getOutCat(d){return[d.gen,d.heat,d.ec,d.oth].map(a=>a.reduce((s,v)=>s+v
 function buildApr(){buildAlert('alert-apr',aprBalance);buildGapBar('gap-apr',aprBalance,aprDays,'4月');buildKpis('kpis-apr',aprBalance);buildTrend('chart-apr',aprDays,aprBalance);buildTable('tbl-apr',aprDays,aprWkend,aprBalance,aprIn,aprOut);buildPie('pie-apr-in','leg-apr-in',getInCat(aprIn),inLabels,inColors);buildPie('pie-apr-out','leg-apr-out',getOutCat(aprOut),outLabels,outColors);}
 function buildMay(){buildAlert('alert-may',mayBalance);buildGapBar('gap-may',mayBalance,mayDays,'5月');buildKpis('kpis-may',mayBalance);buildTrend('chart-may',mayDays,mayBalance);buildTable('tbl-may',mayDays,mayWkend,mayBalance,mayIn,mayOut);buildPie('pie-may-in','leg-may-in',getInCat(mayIn),inLabels,inColors);buildPie('pie-may-out','leg-may-out',getOutCat(mayOut),outLabels,outColors);}
 
-document.getElementById('sv-low').textContent=fmt(low);
-buildApr();buildMay();
+function updateTabAlerts(){
+  const aprAlert=aprBalance.some(b=>b<0);
+  const mayAlert=mayBalance.some(b=>b<0);
+  document.getElementById('tab-apr').classList.toggle('has-alert',aprAlert);
+  document.getElementById('tab-may').classList.toggle('has-alert',mayAlert);
+  const aprBadge=document.querySelector('#tab-apr .alert-badge');
+  const mayBadge=document.querySelector('#tab-may .alert-badge');
+  if(!aprAlert&&aprBadge) aprBadge.remove();
+  if(!mayAlert&&mayBadge) mayBadge.remove();
+}
+
+buildApr();buildMay();updateTabAlerts();
 </script>
 </body>
 </html>
