@@ -7,426 +7,314 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Microsoft JhengHei','PingFang TC','Helvetica Neue',Arial,sans-serif;background:#F4F6F9;color:#1a1a1a;-webkit-font-smoothing:antialiased}
-  .header{background:linear-gradient(135deg,#1B3A5C 0%,#2E6DA4 100%);color:white;padding:24px 32px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-  .header h1{font-size:22px;font-weight:600;margin-bottom:4px;letter-spacing:1px}
-  .header p{font-size:13px;opacity:.85}
-  .container{max-width:1100px;margin:0 auto;padding:24px 18px}
-  .unit-banner{background:#1B3A5C;color:white;text-align:center;padding:9px 0;border-radius:6px;font-size:14px;font-weight:600;margin-bottom:18px;letter-spacing:1.5px}
+  body{font-family:'Microsoft JhengHei','PingFang TC',sans-serif;background:#F4F6F9;color:#1a1a1a}
+  .header{background:linear-gradient(135deg,#1B3A5C 0%,#2E6DA4 100%);color:white;padding:24px 32px}
+  .header h1{font-size:22px;font-weight:600;margin-bottom:4px}
+  .header p{font-size:13px;opacity:.8}
+  .container{max-width:980px;margin:0 auto;padding:24px 16px}
+  .unit-banner{background:#1B3A5C;color:white;text-align:center;padding:8px 0;border-radius:6px;font-size:14px;font-weight:600;margin-bottom:18px;letter-spacing:1px}
   .tabs{display:flex;gap:6px;margin-bottom:20px;border-bottom:2px solid #D0D7E2}
-  .tab{padding:10px 24px;font-size:14px;font-weight:500;border:1px solid #D0D7E2;border-bottom:none;
-       border-radius:6px 6px 0 0;cursor:pointer;background:#EEF1F6;color:#5A6A7E;transition:all .15s;position:relative;display:flex;align-items:center}
-  .tab:hover{background:#E2E8F0}
-  .tab.active{background:white;color:#1B3A5C;font-weight:600;border-color:#B5C2D5}
+  .tab{padding:9px 22px;font-size:13px;font-weight:500;border:1px solid #D0D7E2;border-bottom:none;
+       border-radius:6px 6px 0 0;cursor:pointer;background:#EEF1F6;color:#5A6A7E;transition:all .15s}
+  .tab.active{background:white;color:#1B3A5C;font-weight:600}
   .tab.has-alert{border-color:#E24B4A}
   .alert-badge{display:inline-block;background:#E24B4A;color:white;border-radius:50%;width:20px;height:20px;
-               font-size:12px;font-weight:700;line-height:20px;text-align:center;margin-left:8px;
-               box-shadow:0 1px 3px rgba(226,75,74,.5)}
+               font-size:12px;font-weight:700;line-height:20px;text-align:center;margin-left:6px;vertical-align:middle}
   .panel{display:none}.panel.active{display:block}
-  .alert-bar{border-radius:8px;padding:14px 20px;margin-bottom:14px;font-size:16px;font-weight:500;display:flex;align-items:center;gap:10px}
-  .alert-bar.danger{background:#FCEBEB;color:#A32D2D;border:1px solid #F5B5B5}
-  .alert-bar.warn{background:#FFF3E0;color:#B96A00;border:1px solid #FFD9A8}
-  .alert-bar.ok{background:#E8F5E9;color:#2E7D32;border:1px solid #B7DCBA}
-  .gap-bar{border-radius:8px;padding:14px 20px;margin-bottom:16px;font-size:16px;
-           background:#FCEBEB;color:#A32D2D;border:1px solid #F5B5B5}
-  .suggest-box{background:#fff;border:2px solid #E24B4A;border-radius:8px;padding:14px 18px;margin-top:12px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-  .suggest-label{font-size:14px;color:#A32D2D;font-weight:600;display:flex;align-items:center;gap:6px}
-  .suggest-amount{font-size:24px;color:#A32D2D;font-weight:700;letter-spacing:.5px}
+  .alert-bar{border-radius:8px;padding:13px 18px;margin-bottom:14px;font-size:17px;font-weight:500}
+  .gap-bar{border-radius:8px;padding:13px 18px;margin-bottom:16px;font-size:17px;
+           background:#FCEBEB;color:#A32D2D;border:1px solid #F7C1C1;display:none}
+  .gap-bar.show{display:block}
+  .suggest-box{background:#fff;border:2px solid #E24B4A;border-radius:8px;padding:12px 16px;margin-top:10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .suggest-label{font-size:14px;color:#A32D2D;font-weight:600}
+  .suggest-amount{font-size:24px;color:#A32D2D;font-weight:700}
   .suggest-formula{font-size:13px;color:#7A8A9E}
-  .gap-days{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-  .gap-chip{background:#E24B4A;color:white;border-radius:14px;padding:4px 13px;font-size:13px;font-weight:600;box-shadow:0 1px 2px rgba(226,75,74,.3)}
-  .threshold-info{font-size:13px;color:#5A6A7E;margin-bottom:14px;padding:10px 14px;background:#F0F4F8;border-radius:6px;border-left:3px solid #9AA8B8}
-  .threshold-info b{color:#1B3A5C}
+  .gap-days{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .gap-chip{background:#E24B4A;color:white;border-radius:12px;padding:3px 12px;font-size:14px;font-weight:600}
+  .threshold-info{font-size:13px;color:#5A6A7E;margin-bottom:14px;padding:8px 14px;background:#F0F4F8;border-radius:6px;border-left:3px solid #E24B4A}
   .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
-  .kpi{background:white;border-radius:8px;padding:14px 18px;box-shadow:0 1px 3px rgba(0,0,0,.07)}
-  .kpi.danger{background:#FCEBEB;border:1px solid #F5B5B5}
-  .kpi-label{font-size:15px;color:#7A8A9E;margin-bottom:6px}
-  .kpi-val{font-size:26px;font-weight:600;color:#1B3A5C;letter-spacing:.3px}
-  .kpi.danger .kpi-val{color:#A32D2D}
-  .kpi-sub{font-size:14px;margin-top:4px;color:#9AA8B8}
-  .kpi.danger .kpi-sub{color:#C25555}
-  .card{background:white;border-radius:10px;padding:18px 22px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:16px}
-  .section-title{font-size:13px;font-weight:600;color:#7A8A9E;margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em}
+  .kpi{background:white;border-radius:8px;padding:14px 16px;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+  .kpi.danger{background:#FCEBEB;border:1px solid #F7C1C1}
+  .kpi-label{font-size:15px;color:#7A8A9E;margin-bottom:5px}
+  .kpi-val{font-size:26px;font-weight:600}
+  .kpi-sub{font-size:14px;margin-top:3px;color:#9AA8B8}
+  .card{background:white;border-radius:10px;padding:18px 20px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:16px}
+  .section-title{font-size:12px;font-weight:600;color:#7A8A9E;margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em}
   .section-title .unit{font-size:11px;color:#9AA8B8;margin-left:8px;font-weight:400;text-transform:none;letter-spacing:0}
-  .chart-wrap{position:relative;width:100%;height:300px}
+  .chart-wrap{position:relative;width:100%;height:260px}
   .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
-  .pie-wrap{position:relative;width:100%;height:220px}
-  .legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:8px;font-size:12px;color:#5A6A7E}
-  .legend span{display:flex;align-items:center;gap:5px}
-  .legend i{width:14px;height:3px;display:inline-block;flex-shrink:0;border-radius:2px}
-  .legend i.bgblock{height:11px;border-radius:2px}
-  .legend i.dashed{height:0;border-top:2px dashed currentColor;width:18px}
-  .table-wrap{overflow-x:auto}
-  table{width:100%;border-collapse:collapse;font-size:12px}
-  th{background:#EEF1F6;color:#1B3A5C;padding:8px 6px;font-weight:600;text-align:right;border-bottom:2px solid #B5C2D5;white-space:nowrap}
-  th:first-child,th:nth-child(2){text-align:center}
-  td{padding:7px 6px;text-align:right;border-bottom:1px solid #ECEEF2;white-space:nowrap}
-  td:first-child,td:nth-child(2){text-align:center;font-weight:500}
-  tr.weekend{background:#F4F6F9}
-  td.deposit-neg{background:#FCEBEB;color:#A32D2D;font-weight:700}
-  td.deposit-warn{color:#B96A00;font-weight:600}
-  td.deposit-ok{font-weight:500}
-  td.net-pos{color:#2E7D32}
-  td.net-neg{color:#A32D2D}
-  td.weekend-tag{color:#9AA8B8;font-size:11px}
-  tr.total-row td{background:#1B3A5C;color:white;font-weight:700;border-bottom:none}
-  tr.total-row td:first-child{text-align:center}
-  .col-divider{border-left:2px solid #D0D7E2 !important}
-  @media (max-width:760px){
-    .header{padding:18px 16px}
-    .header h1{font-size:18px}
-    .container{padding:16px 10px}
+  .pie-wrap{position:relative;width:100%;height:185px}
+  .legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px;font-size:11px;color:#5A6A7E}
+  .legend span{display:flex;align-items:center;gap:4px}
+  .legend i{width:11px;height:11px;border-radius:2px;display:inline-block;flex-shrink:0}
+  .table-wrap{overflow-x:auto;margin-bottom:0}
+  table{width:100%;border-collapse:collapse;font-size:11px;min-width:900px}
+  table th{padding:6px 8px;text-align:center;font-weight:600;white-space:nowrap}
+  table td{padding:5px 8px;text-align:right;white-space:nowrap;border-bottom:.5px solid #E8ECF0}
+  table td:first-child{text-align:center;font-weight:500}
+  .th-date,.th-bal{background:#1B3A5C;color:#fff}
+  .th-in{background:#185FA5;color:#fff}.th-in-sub{background:#2E6DA4;color:#fff}
+  .th-out{background:#8B1A0A;color:#fff}.th-out-sub{background:#A32D2D;color:#fff}
+  .th-net{background:#4A235A;color:#fff}
+  tr.weekend td{background:#F8F9FA}
+  tr.total-row td{background:#1B3A5C;color:#fff;font-weight:600}
+  td.net-pos{color:#27500A;font-weight:600}
+  td.net-neg{color:#A32D2D;font-weight:600}
+  td.gap-cell{background:#FCEBEB;color:#A32D2D;font-weight:600}
+  td.warn-cell{color:#E67E22;font-weight:500}
+  tr.total-row td.net-pos{color:#90EE90}
+  tr.total-row td.net-neg{color:#FFB3B3}
+  @media(max-width:600px){
     .kpis{grid-template-columns:repeat(2,1fr)}
     .two-col{grid-template-columns:1fr}
-    .kpi-val{font-size:22px}
-    .tab{padding:9px 16px;font-size:13px}
-    .alert-bar,.gap-bar{font-size:14px;padding:11px 14px}
-    .suggest-amount{font-size:20px}
+    .header h1{font-size:17px}
   }
 </style>
 </head>
 <body>
-
 <div class="header">
   <h1>日翊　資金水位控管儀表板</h1>
-  <p>民國 115年　4月 ・ 5月</p>
+  <p>民國 115年　4月 ・ 5月　|　每日銀行存款餘額監控</p>
 </div>
-
 <div class="container">
-
   <div class="unit-banner">📊 本儀表板所有金額單位皆為「仟元」</div>
 
-  <div class="tabs" id="tabs"></div>
+  <div class="tabs">
+    <div class="tab active" id="tab-apr" onclick="switchTab('apr')">4月</div>
+    <div class="tab has-alert" id="tab-may" onclick="switchTab('may')">5月<span class="alert-badge">!</span></div>
+  </div>
 
-  <div id="panels"></div>
-
-</div>
-
-<script>
-const DATA = {"prev": {"sheet": "11504", "month": 4, "opening": 56080.0, "last_deposit": 75328.0, "rows": [{"day": 1, "weekend": false, "income": {"一般商品收入": 220007.0, "加熱菸銷貨款": 0.0, "EC代收款": 109878.0, "其他": 47993.0}, "inflow_total": 377878.0, "expense": {"一般商品進貨": 142172.0, "加熱菸進貨款": 0.0, "EC代付款": 182218.0, "其他": 8549.0}, "outflow_total": 332939.0, "net": 44939.0, "deposit": 101019.0}, {"day": 2, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 6727.0, "其他": 559.0}, "inflow_total": 7286.0, "expense": {"一般商品進貨": 200.0, "加熱菸進貨款": 13818.0, "EC代付款": 0.0, "其他": 21466.0}, "outflow_total": 35484.0, "net": -28198.0, "deposit": 72821.0}, {"day": 3, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 72821.0}, {"day": 4, "weekend": true, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 72821.0}, {"day": 5, "weekend": true, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 72821.0}, {"day": 6, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 72821.0}, {"day": 7, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 208674.0, "EC代收款": 394914.0, "其他": 136.0}, "inflow_total": 603724.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 129693.0, "EC代付款": 284134.0, "其他": 892.0}, "outflow_total": 414719.0, "net": 189005.0, "deposit": 261826.0}, {"day": 8, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 90.0, "其他": 20.0}, "inflow_total": 110.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 967.0}, "outflow_total": 967.0, "net": -857.0, "deposit": 260969.0}, {"day": 9, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 249.0, "其他": 9.0}, "inflow_total": 258.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 391.0}, "outflow_total": 391.0, "net": -133.0, "deposit": 260836.0}, {"day": 10, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 40986.0, "EC代收款": 192034.0, "其他": 423.0}, "inflow_total": 233443.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 34516.0, "EC代付款": 172430.0, "其他": 21220.0}, "outflow_total": 228166.0, "net": 5277.0, "deposit": 266113.0}, {"day": 11, "weekend": true, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 266113.0}, {"day": 12, "weekend": true, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 266113.0}, {"day": 13, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 224530.0, "EC代收款": 96.0, "其他": 242.0}, "inflow_total": 224868.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 129693.0, "EC代付款": 44525.0, "其他": 354.0}, "outflow_total": 174572.0, "net": 50296.0, "deposit": 316409.0}, {"day": 14, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 46785.0}, "inflow_total": 46785.0, "expense": {"一般商品進貨": 44351.0, "加熱菸進貨款": 0.0, "EC代付款": 44567.0, "其他": 1726.0}, "outflow_total": 90644.0, "net": -43859.0, "deposit": 272550.0}, {"day": 15, "weekend": false, "income": {"一般商品收入": 308467.0, "加熱菸銷貨款": 0.0, "EC代收款": 205447.0, "其他": 1279.0}, "inflow_total": 515193.0, "expense": {"一般商品進貨": 71456.0, "加熱菸進貨款": 0.0, "EC代付款": 403725.0, "其他": 75222.0}, "outflow_total": 550403.0, "net": -35210.0, "deposit": 237340.0}, {"day": 16, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 17800.0, "EC代付款": 0.0, "其他": 1793.0}, "outflow_total": 19593.0, "net": -19593.0, "deposit": 217747.0}, {"day": 17, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 449077.0, "其他": 0.0}, "inflow_total": 449077.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 257506.0, "其他": 139.0}, "outflow_total": 257645.0, "net": 191432.0, "deposit": 409179.0}, {"day": 18, "weekend": true, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 409179.0}, {"day": 19, "weekend": true, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 409179.0}, {"day": 20, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 102213.0, "其他": 0.0}, "inflow_total": 102213.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 187126.0, "其他": 1830.0}, "outflow_total": 188956.0, "net": -86743.0, "deposit": 322436.0}, {"day": 21, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 154.0}, "outflow_total": 154.0, "net": -154.0, "deposit": 322282.0}, {"day": 22, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 200000.0, "EC代收款": 362000.0, "其他": 0.0}, "inflow_total": 562000.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 135378.0, "EC代付款": 350000.0, "其他": 0.0}, "outflow_total": 485378.0, "net": 76622.0, "deposit": 398904.0}, {"day": 23, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 515.0}, "outflow_total": 515.0, "net": -515.0, "deposit": 398389.0}, {"day": 24, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 253000.0, "其他": 0.0}, "inflow_total": 253000.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 134910.0, "其他": 966.0}, "outflow_total": 135876.0, "net": 117124.0, "deposit": 515513.0}, {"day": 25, "weekend": true, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 515513.0}, {"day": 26, "weekend": true, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 515513.0}, {"day": 27, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 14754.0, "EC代付款": 120000.0, "其他": 500.0}, "outflow_total": 135254.0, "net": -135254.0, "deposit": 380259.0}, {"day": 28, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 380259.0}, {"day": 29, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 362000.0, "其他": 0.0}, "inflow_total": 362000.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 350000.0, "其他": 0.0}, "outflow_total": 350000.0, "net": 12000.0, "deposit": 392259.0}, {"day": 30, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 206289.0, "加熱菸進貨款": 64787.0, "EC代付款": 0.0, "其他": 45855.0}, "outflow_total": 316931.0, "net": -316931.0, "deposit": 75328.0}], "income_totals": {"一般商品收入": 528474.0, "加熱菸銷貨款": 674190.0, "EC代收款": 2437725.0, "其他": 97446.0}, "expense_totals": {"一般商品進貨": 464468.0, "加熱菸進貨款": 540439.0, "EC代付款": 2531141.0, "其他": 182539.0}, "sum_inflow": 3737835.0, "sum_outflow": 3718587.0, "kpis": {"opening": 56080.0, "closing": 75328.0, "max_bal": 515513.0, "min_bal": 72821.0, "gap_count": 0, "max_gap": 0, "max_gap_day": null, "gap_day_list": []}}, "this": {"sheet": "11505", "month": 5, "opening": 75328.0, "last_deposit": 19222.0, "rows": [{"day": 1, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 75328.0}, {"day": 2, "weekend": true, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 75328.0}, {"day": 3, "weekend": true, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 75328.0}, {"day": 4, "weekend": false, "income": {"一般商品收入": 88651.0, "加熱菸銷貨款": 0.0, "EC代收款": 253000.0, "其他": 36.0}, "inflow_total": 341687.0, "expense": {"一般商品進貨": 159650.0, "加熱菸進貨款": 0.0, "EC代付款": 331000.0, "其他": 11900.0}, "outflow_total": 502550.0, "net": -160863.0, "deposit": -85535.0}, {"day": 5, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 200000.0, "EC代收款": 121800.0, "其他": 0.0}, "inflow_total": 321800.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 21000.0}, "outflow_total": 21000.0, "net": 300800.0, "deposit": 215265.0}, {"day": 6, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 362000.0, "其他": 0.0}, "inflow_total": 362000.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 350000.0, "其他": 0.0}, "outflow_total": 350000.0, "net": 12000.0, "deposit": 227265.0}, {"day": 7, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 227265.0}, {"day": 8, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 253000.0, "其他": 0.0}, "inflow_total": 253000.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 125000.0, "其他": 18000.0}, "outflow_total": 143000.0, "net": 110000.0, "deposit": 337265.0}, {"day": 9, "weekend": true, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 337265.0}, {"day": 10, "weekend": true, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 337265.0}, {"day": 11, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 21200.0, "其他": 0.0}, "inflow_total": 21200.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 172108.0, "其他": 2000.0}, "outflow_total": 174108.0, "net": -152908.0, "deposit": 184357.0}, {"day": 12, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 200000.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 200000.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 200000.0, "deposit": 384357.0}, {"day": 13, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 362000.0, "其他": 0.0}, "inflow_total": 362000.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 350000.0, "其他": 0.0}, "outflow_total": 350000.0, "net": 12000.0, "deposit": 396357.0}, {"day": 14, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 64.0}, "outflow_total": 64.0, "net": -64.0, "deposit": 396293.0}, {"day": 15, "weekend": false, "income": {"一般商品收入": 4000.0, "加熱菸銷貨款": 0.0, "EC代收款": 253000.0, "其他": 0.0}, "inflow_total": 257000.0, "expense": {"一般商品進貨": 86249.0, "加熱菸進貨款": 0.0, "EC代付款": 244000.0, "其他": 200746.0}, "outflow_total": 530995.0, "net": -273995.0, "deposit": 122298.0}, {"day": 16, "weekend": true, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 122298.0}, {"day": 17, "weekend": true, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 122298.0}, {"day": 18, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 120000.0, "其他": 0.0}, "outflow_total": 120000.0, "net": -120000.0, "deposit": 2298.0}, {"day": 19, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 2298.0}, {"day": 20, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 453800.0, "其他": 0.0}, "inflow_total": 453800.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 350000.0, "其他": 1100.0}, "outflow_total": 351100.0, "net": 102700.0, "deposit": 104998.0}, {"day": 21, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 104998.0}, {"day": 22, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 253000.0, "其他": 0.0}, "inflow_total": 253000.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 125000.0, "其他": 0.0}, "outflow_total": 125000.0, "net": 128000.0, "deposit": 232998.0}, {"day": 23, "weekend": true, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 232998.0}, {"day": 24, "weekend": true, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 232998.0}, {"day": 25, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 120000.0, "其他": 1015.0}, "outflow_total": 121015.0, "net": -121015.0, "deposit": 111983.0}, {"day": 26, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 111983.0}, {"day": 27, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 362000.0, "其他": 0.0}, "inflow_total": 362000.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 350000.0, "其他": 0.0}, "outflow_total": 350000.0, "net": 12000.0, "deposit": 123983.0}, {"day": 28, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 123983.0}, {"day": 29, "weekend": false, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 253000.0, "其他": 0.0}, "inflow_total": 253000.0, "expense": {"一般商品進貨": 185000.0, "加熱菸進貨款": 0.0, "EC代付款": 125000.0, "其他": 47761.0}, "outflow_total": 357761.0, "net": -104761.0, "deposit": 19222.0}, {"day": 30, "weekend": true, "income": {"一般商品收入": 0.0, "加熱菸銷貨款": 0.0, "EC代收款": 0.0, "其他": 0.0}, "inflow_total": 0.0, "expense": {"一般商品進貨": 0.0, "加熱菸進貨款": 0.0, "EC代付款": 0.0, "其他": 0.0}, "outflow_total": 0.0, "net": 0.0, "deposit": 19222.0}], "income_totals": {"一般商品收入": 92651.0, "加熱菸銷貨款": 400000.0, "EC代收款": 2947800.0, "其他": 36.0}, "expense_totals": {"一般商品進貨": 430899.0, "加熱菸進貨款": 0.0, "EC代付款": 2762108.0, "其他": 303586.0}, "sum_inflow": 3440487.0, "sum_outflow": 3496593.0, "kpis": {"opening": 75328.0, "closing": 19222.0, "max_bal": 396357.0, "min_bal": -85535.0, "gap_count": 1, "max_gap": -85535.0, "max_gap_day": 4, "gap_day_list": [{"day": 4, "deposit": -85535.0}]}}};
-const THRESHOLD = 50000;   // 警戒水位（仟元）
-
-const fmt = (n) => {
-  if (n === null || n === undefined || isNaN(n)) return '-';
-  const sign = n < 0 ? '-' : '';
-  return sign + Math.abs(Math.round(n)).toLocaleString('en-US');
-};
-
-const monthName = (m) => `${m}月`;
-
-// 建立頁籤
-const tabsEl = document.getElementById('tabs');
-const panelsEl = document.getElementById('panels');
-
-const months = [
-  {key:'prev', data:DATA.prev, label:monthName(DATA.prev.month)},
-  {key:'this', data:DATA.this, label:monthName(DATA.this.month)},
-];
-
-months.forEach((m, idx) => {
-  const tab = document.createElement('div');
-  tab.className = 'tab' + (idx === 1 ? ' active' : '');
-  const hasGap = m.data.kpis.gap_count > 0;
-  if (hasGap) tab.classList.add('has-alert');
-  tab.innerHTML = `${m.label}` + (hasGap ? '<span class="alert-badge">!</span>' : '');
-  tab.dataset.target = m.key;
-  tab.onclick = () => {
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById('panel-'+m.key).classList.add('active');
-  };
-  tabsEl.appendChild(tab);
-});
-
-// 渲染面板
-months.forEach((m, idx) => {
-  const panel = document.createElement('div');
-  panel.className = 'panel' + (idx === 1 ? ' active' : '');
-  panel.id = 'panel-' + m.key;
-  panel.innerHTML = renderPanel(m.key, m.data);
-  panelsEl.appendChild(panel);
-});
-
-function renderPanel(key, d){
-  const k = d.kpis;
-  const hasGap = k.gap_count > 0;
-  const closing = k.closing;
-
-  // 警示長條
-  let alertBar = '';
-  if (closing < 0) {
-    alertBar = `<div class="alert-bar danger">⚠ 月底餘額為負數 ${fmt(closing)}，資金嚴重不足，需立即調度！</div>`;
-  } else if (closing < THRESHOLD) {
-    alertBar = `<div class="alert-bar warn">⚠ 月底餘額 ${fmt(closing)}（低於警戒水位 $${fmt(THRESHOLD)}）</div>`;
-  } else {
-    alertBar = `<div class="alert-bar ok">✓ 月底餘額 ${fmt(closing)} 正常</div>`;
-  }
-
-  // 資金缺口警示欄
-  let gapBar = '';
-  if (hasGap) {
-    const suggest = Math.abs(k.max_gap) + THRESHOLD;
-    const chips = k.gap_day_list.map(g => `<span class="gap-chip">${d.month}/${g.day}　${fmt(g.deposit)}</span>`).join('');
-    gapBar = `
-      <div class="gap-bar">
-        <div>⚠ <b>需要資金調度！</b>本月共 <b>${k.gap_count}</b> 天出現資金缺口（餘額小於 0），最大缺口 <b>${fmt(k.max_gap)}</b>（${d.month}月${k.max_gap_day}日）</div>
-        <div class="suggest-box">
-          <div class="suggest-label">💰 建議調撥金額</div>
-          <div class="suggest-amount">$${fmt(suggest)}</div>
-          <div class="suggest-formula">＝ 最大缺口 $${fmt(Math.abs(k.max_gap))} + 警戒水位 $${fmt(THRESHOLD)}</div>
-        </div>
-        <div class="gap-days">${chips}</div>
-      </div>`;
-  }
-
-  // KPI 四格
-  const kpi4Class = hasGap ? 'kpi danger' : 'kpi';
-  const kpi4 = hasGap
-    ? `<div class="${kpi4Class}"><div class="kpi-label">資金缺口天數</div><div class="kpi-val">${k.gap_count} 天</div><div class="kpi-sub">需資金調撥</div></div>`
-    : `<div class="kpi"><div class="kpi-label">月最低餘額</div><div class="kpi-val">${fmt(k.min_bal)}</div><div class="kpi-sub">仟元</div></div>`;
-
-  const kpis = `
-    <div class="kpis">
-      <div class="kpi"><div class="kpi-label">月初餘額</div><div class="kpi-val">${fmt(k.opening)}</div><div class="kpi-sub">仟元</div></div>
-      <div class="kpi"><div class="kpi-label">月底餘額</div><div class="kpi-val">${fmt(k.closing)}</div><div class="kpi-sub">仟元</div></div>
-      <div class="kpi"><div class="kpi-label">月最高餘額</div><div class="kpi-val">${fmt(k.max_bal)}</div><div class="kpi-sub">仟元</div></div>
-      ${kpi4}
-    </div>`;
-
-  const thresholdInfo = `<div class="threshold-info">📌 警戒水位固定為 <b>$${fmt(THRESHOLD)}</b>（仟元），月底餘額或日餘額低於此值將觸發警示</div>`;
-
-  // 趨勢圖卡片
-  const trendCard = `
+  <!-- 4月 -->
+  <div class="panel active" id="panel-apr">
+    <div id="alert-apr" class="alert-bar"></div>
+    <div id="gap-apr" class="gap-bar"></div>
+    <div class="kpis" id="kpis-apr"></div>
+    <div class="threshold-info">⚙ 最低警戒水位：<strong>$50,000 仟元</strong>（固定值，作為資金調撥判斷依據）</div>
     <div class="card">
       <div class="section-title">每日銀行存款餘額趨勢<span class="unit">（單位：仟元）</span></div>
       <div class="legend">
-        <span><i class="bgblock" style="background:rgba(180,20,20,0.45)"></i>資金缺口警示區</span>
-        <span><i class="dashed" style="color:#E24B4A"></i>警戒水位 $${fmt(THRESHOLD)}</span>
-        <span><i class="dashed" style="color:#7A1F1F"></i>零基線</span>
+        <span><i style="background:rgba(180,20,20,0.45);border:1px solid #c01414"></i>資金缺口警示區</span>
+        <span><i style="background:#E24B4A;border-radius:0;width:18px;height:3px"></i>警戒水位</span>
+        <span><i style="background:#7B0000;border-radius:0;width:18px;height:3px"></i>零基線</span>
       </div>
-      <div class="chart-wrap"><canvas id="trend-${key}"></canvas></div>
-    </div>`;
-
-  // 收付明細表
-  const detailCard = `
+      <div class="chart-wrap"><canvas id="chart-apr"></canvas></div>
+    </div>
     <div class="card">
       <div class="section-title">每日收付明細<span class="unit">（單位：仟元）</span></div>
-      <div class="table-wrap">${renderTable(d)}</div>
-    </div>`;
-
-  // 收入/支出甜甜圈
-  const pieCard = `
+      <div class="table-wrap"><table id="tbl-apr"></table></div>
+    </div>
     <div class="two-col">
       <div class="card">
-        <div class="section-title">月度收入分布<span class="unit">（單位：仟元）</span></div>
-        <div class="pie-wrap"><canvas id="income-${key}"></canvas></div>
+        <div class="section-title">收入來源<span class="unit">（單位：仟元）</span></div>
+        <div class="legend" id="leg-apr-in"></div>
+        <div class="pie-wrap"><canvas id="pie-apr-in"></canvas></div>
       </div>
       <div class="card">
-        <div class="section-title">月度支出分布<span class="unit">（單位：仟元）</span></div>
-        <div class="pie-wrap"><canvas id="expense-${key}"></canvas></div>
+        <div class="section-title">支出用途<span class="unit">（單位：仟元）</span></div>
+        <div class="legend" id="leg-apr-out"></div>
+        <div class="pie-wrap"><canvas id="pie-apr-out"></canvas></div>
       </div>
-    </div>`;
+    </div>
+  </div>
 
-  return alertBar + gapBar + thresholdInfo + kpis + trendCard + pieCard + detailCard;
-}
+  <!-- 5月 -->
+  <div class="panel" id="panel-may">
+    <div id="alert-may" class="alert-bar"></div>
+    <div id="gap-may" class="gap-bar"></div>
+    <div class="kpis" id="kpis-may"></div>
+    <div class="threshold-info">⚙ 最低警戒水位：<strong>$50,000 仟元</strong>（固定值，作為資金調撥判斷依據）</div>
+    <div class="card">
+      <div class="section-title">每日銀行存款餘額趨勢<span class="unit">（單位：仟元）</span></div>
+      <div class="legend">
+        <span><i style="background:rgba(180,20,20,0.45);border:1px solid #c01414"></i>資金缺口警示區</span>
+        <span><i style="background:#E24B4A;border-radius:0;width:18px;height:3px"></i>警戒水位</span>
+        <span><i style="background:#7B0000;border-radius:0;width:18px;height:3px"></i>零基線</span>
+      </div>
+      <div class="chart-wrap"><canvas id="chart-may"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="section-title">每日收付明細<span class="unit">（單位：仟元）</span></div>
+      <div class="table-wrap"><table id="tbl-may"></table></div>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="section-title">收入來源<span class="unit">（單位：仟元）</span></div>
+        <div class="legend" id="leg-may-in"></div>
+        <div class="pie-wrap"><canvas id="pie-may-in"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="section-title">支出用途<span class="unit">（單位：仟元）</span></div>
+        <div class="legend" id="leg-may-out"></div>
+        <div class="pie-wrap"><canvas id="pie-may-out"></canvas></div>
+      </div>
+    </div>
+  </div>
+</div>
 
-function renderTable(d) {
-  const incNames = ['一般商品收入','加熱菸銷貨款','EC代收款','其他'];
-  const expNames = ['一般商品進貨','加熱菸進貨款','EC代付款','其他'];
-  let html = '<table><thead><tr>';
-  html += '<th>日期</th><th>星期</th>';
-  incNames.forEach(n => html += `<th>${n}</th>`);
-  html += '<th class="col-divider">流入合計</th>';
-  expNames.forEach(n => html += `<th>${n}</th>`);
-  html += '<th class="col-divider">流出合計</th>';
-  html += '<th class="col-divider">當日淨流入(出)</th>';
-  html += '<th class="col-divider">當日銀行存款</th>';
-  html += '</tr></thead><tbody>';
+<script>
+const fmt = v=>(v<0?'-$':'$')+Math.abs(Math.round(v)).toLocaleString('zh-TW');
+const fmtN= v=>v===0?'—':fmt(v);
+const LOW = 50000;
 
-  d.rows.forEach(r => {
-    const wknd = r.weekend;
-    const trClass = wknd ? 'weekend' : '';
-    let depClass = 'deposit-ok';
-    if (r.deposit < 0) depClass = 'deposit-neg';
-    else if (r.deposit < THRESHOLD) depClass = 'deposit-warn';
-    const netClass = r.net > 0 ? 'net-pos' : (r.net < 0 ? 'net-neg' : '');
-    html += `<tr class="${trClass}">`;
-    html += `<td>${d.month}/${r.day}</td>`;
-    html += `<td class="weekend-tag">${wknd ? '休' : ''}</td>`;
-    incNames.forEach(n => html += `<td>${r.income[n] ? fmt(r.income[n]) : '-'}</td>`);
-    html += `<td class="col-divider">${fmt(r.inflow_total)}</td>`;
-    expNames.forEach(n => html += `<td>${r.expense[n] ? fmt(r.expense[n]) : '-'}</td>`);
-    html += `<td class="col-divider">${fmt(r.outflow_total)}</td>`;
-    html += `<td class="col-divider ${netClass}">${r.net !== 0 ? fmt(r.net) : '-'}</td>`;
-    html += `<td class="col-divider ${depClass}">${fmt(r.deposit)}</td>`;
-    html += `</tr>`;
+const aprDays    = Array.from({length:30},(_,i)=>i+1);
+const aprWkend   = [false,false,false,true,true,false,false,false,false,false,true,true,false,false,false,false,false,true,true,false,false,false,false,false,true,true,false,false,false,false];
+const aprBalance = [101019,72821,72821,72821,72821,72821,261826,260969,260836,266113,266113,266113,316409,272550,237340,218161,410147,410147,410147,300718,302537,398037,397519,514643,514643,514643,379389,379389,391389,74458];
+const aprIn={gen:[220007,0,0,0,0,0,0,0,0,0,0,0,0,0,308467,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],heat:[0,0,0,0,0,0,208674,0,0,40986,0,0,224530,0,0,0,0,0,0,0,0,218878,0,0,0,0,0,0,0,0],ec:[109878,6727,0,0,0,0,394914,90,249,192034,0,0,96,0,205447,338,449566,0,0,84840,45006,362000,0,253000,0,0,0,0,362000,0],oth:[47993,559,0,0,0,0,136,20,9,423,0,0,242,46785,1279,76,65,0,0,0,0,0,0,0,0,0,0,0,0,0]};
+const aprOut={gen:[142172,200,0,0,0,0,0,0,0,0,0,0,0,44351,71456,0,0,0,0,5610,0,0,0,0,0,0,0,0,0,206289],heat:[0,13818,0,0,0,0,129693,0,0,34516,0,0,129693,0,0,17800,0,0,0,0,0,135378,0,0,0,0,14754,0,0,64787],ec:[182218,0,0,0,0,0,284134,0,0,172430,0,0,44525,44567,403725,0,257506,0,0,187126,43033,350000,0,134910,0,0,120000,0,350000,0],oth:[8549,21466,0,0,0,0,892,967,391,21220,0,0,354,1726,75222,1793,139,0,0,1533,154,0,518,966,0,0,500,0,0,45855]};
+
+const mayDays    = Array.from({length:31},(_,i)=>i+1);
+const mayWkend   = [false,true,true,false,false,false,false,false,true,true,false,false,false,false,false,true,true,false,false,false,false,false,true,true,false,false,false,false,false,true,true];
+const mayBalance = [74458,74458,74458,-69377,151494,163494,163494,264563,264563,264563,112273,21880,29616,29552,-244443,-244443,-244443,-364443,-364443,-261743,-261743,-133743,-133743,-133743,-254758,-254758,-242758,-242758,-347519,-347519,0];
+const mayIn={gen:[0,0,0,88651,0,0,0,0,0,0,0,0,0,0,4000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],heat:[0,0,0,0,200000,0,0,0,0,0,0,200000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],ec:[0,0,0,253000,121800,362000,0,253000,0,0,21200,0,362000,0,253000,0,0,0,0,453800,0,253000,0,0,0,0,362000,0,253000,0,0],oth:[0,0,0,36,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]};
+const mayOut={gen:[0,0,0,159650,0,0,0,0,0,0,0,0,0,0,86249,0,0,0,0,0,0,0,0,0,0,0,0,0,185000,0,0],heat:[0,0,0,0,79929,0,0,8931,0,0,0,290393,4264,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],ec:[0,0,0,313972,0,350000,0,125000,0,0,172108,0,350000,0,244000,0,0,120000,0,350000,0,125000,0,0,120000,0,350000,0,125000,0,0],oth:[0,0,0,11900,21000,0,0,18000,0,0,1382,0,0,64,200746,0,0,0,0,1100,0,0,0,0,1015,0,0,0,47761,0,0]};
+
+const inLabels=['一般商品收入','加熱菸銷貨款','EC代收款','其他'];
+const outLabels=['一般商品進貨','加熱菸進貨款','EC代付款','其他'];
+const inColors=['#0D47A1','#1976D2','#64B5F6','#B3E5FC'];
+const outColors=['#BF360C','#E64A19','#FF8A65','#FFCCBC'];
+
+let charts={};
+
+const gapZonePlugin={id:'gapZone',beforeDraw(chart){
+  const{ctx,chartArea,scales}=chart;if(!chartArea)return;
+  const xS=scales.x,yS=scales.y,data=chart.data.datasets[0].data;
+  const zero=yS.getPixelForValue(0),bot=chartArea.bottom;
+  data.forEach((val,i)=>{
+    if(val>=0)return;
+    const xL=i===0?chartArea.left:(xS.getPixelForValue(i-1)+xS.getPixelForValue(i))/2;
+    const xR=i===data.length-1?chartArea.right:(xS.getPixelForValue(i)+xS.getPixelForValue(i+1))/2;
+    ctx.save();ctx.fillStyle='rgba(180,20,20,0.45)';ctx.fillRect(xL,zero,xR-xL,bot-zero);
+    ctx.strokeStyle='rgba(200,20,20,0.85)';ctx.lineWidth=2;ctx.setLineDash([4,3]);
+    ctx.beginPath();ctx.moveTo(xL,zero);ctx.lineTo(xR,zero);ctx.stroke();ctx.restore();
+    ctx.save();ctx.fillStyle='#fff';ctx.font='bold 11px sans-serif';ctx.textAlign='center';
+    ctx.fillText('缺口',(xL+xR)/2,bot-6);ctx.restore();
   });
+}};
 
-  // 合計列
-  html += `<tr class="total-row">`;
-  html += `<td colspan="2">合計</td>`;
-  incNames.forEach(n => html += `<td>${fmt(d.income_totals[n])}</td>`);
-  html += `<td class="col-divider">${fmt(d.sum_inflow)}</td>`;
-  expNames.forEach(n => html += `<td>${fmt(d.expense_totals[n])}</td>`);
-  html += `<td class="col-divider">${fmt(d.sum_outflow)}</td>`;
-  html += `<td class="col-divider">${fmt(d.sum_inflow - d.sum_outflow)}</td>`;
-  html += `<td class="col-divider">-</td>`;
-  html += `</tr>`;
+function switchTab(t){['apr','may'].forEach((id,i)=>{document.querySelectorAll('.tab')[i].classList.toggle('active',id===t);document.getElementById('panel-'+id).classList.toggle('active',id===t);});}
+function ptColor(b){return b<0?'#E24B4A':b<LOW?'#E67E22':'#185FA5';}
 
-  html += '</tbody></table>';
-  return html;
+function buildKpis(id,balance){
+  const last=balance[balance.length-1],first=balance[0];
+  const maxB=Math.max(...balance),minB=Math.min(...balance);
+  const gapDays=balance.filter(b=>b<0).length;
+  const items=[
+    ['月初餘額',fmt(first),'月初',first<0?'#E24B4A':first<LOW?'#E67E22':'#1B3A5C',false],
+    ['月底餘額',fmt(last),'月底',last<0?'#E24B4A':last<LOW?'#E67E22':'#1B3A5C',false],
+    ['月最高餘額',fmt(maxB),'第'+(balance.indexOf(maxB)+1)+'日','#0D6E30',false],
+    gapDays>0
+      ? ['資金缺口天數',gapDays+'天','需資金調撥','#A32D2D',true]
+      : ['月最低餘額',fmt(minB),'第'+(balance.indexOf(minB)+1)+'日','#1B3A5C',false],
+  ];
+  document.getElementById(id).innerHTML=items.map(([l,v,d,c,danger])=>
+    `<div class="kpi${danger?' danger':''}"><div class="kpi-label">${danger?'⚠ '+l:l}</div><div class="kpi-val" style="color:${c}">${v}</div><div class="kpi-sub">${d}</div></div>`
+  ).join('');
 }
 
-// =============== 圖表繪製 ===============
-const negBgPlugin = {
-  id: 'negBgPlugin',
-  beforeDatasetsDraw(chart) {
-    const {ctx, chartArea, scales} = chart;
-    if (!chartArea || !scales.x || !scales.y) return;
-    const yZero = scales.y.getPixelForValue(0);
-    const yBottom = scales.y.getPixelForValue(scales.y.min);
-    const dataset = chart.data.datasets[0];
-    if (!dataset) return;
-    const labels = chart.data.labels;
-    ctx.save();
-    dataset.data.forEach((v, i) => {
-      if (v < 0) {
-        const x = scales.x.getPixelForValue(i);
-        const half = (scales.x.getPixelForValue(1) - scales.x.getPixelForValue(0)) / 2;
-        const x1 = x - half;
-        const w = half * 2;
-        ctx.fillStyle = 'rgba(180,20,20,0.45)';
-        ctx.fillRect(x1, chartArea.top, w, chartArea.bottom - chartArea.top);
-        // 缺口文字
-        ctx.fillStyle = '#fff';
-        ctx.font = 'bold 11px Microsoft JhengHei, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('缺口', x, chartArea.top + 14);
-      }
-    });
-    ctx.restore();
-  }
-};
-
-function drawTrend(canvasId, d) {
-  const ctx = document.getElementById(canvasId);
-  if (!ctx) return;
-  const labels = d.rows.map(r => `${d.month}/${r.day}`);
-  const values = d.rows.map(r => r.deposit);
-  const pointColors = values.map(v => v < 0 ? '#C62828' : (v < THRESHOLD ? '#F57C00' : '#1976D2'));
-  const minY = Math.min(...values, 0);
-  const maxY = Math.max(...values, THRESHOLD);
-
-  new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [
-        {
-          label: '當日銀行存款',
-          data: values,
-          borderColor: '#1976D2',
-          backgroundColor: 'rgba(25,118,210,0.08)',
-          borderWidth: 2,
-          pointBackgroundColor: pointColors,
-          pointBorderColor: pointColors,
-          pointRadius: 4,
-          pointHoverRadius: 6,
-          tension: 0.25,
-          fill: true,
-        },
-        {
-          label: '警戒水位',
-          data: values.map(_ => THRESHOLD),
-          borderColor: '#E24B4A',
-          borderWidth: 1.5,
-          borderDash: [6,4],
-          pointRadius: 0,
-          fill: false,
-        },
-        {
-          label: '零基線',
-          data: values.map(_ => 0),
-          borderColor: '#7A1F1F',
-          borderWidth: 1.5,
-          borderDash: [4,4],
-          pointRadius: 0,
-          fill: false,
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: {intersect:false, mode:'index'},
-      plugins: {
-        legend: {display:false},
-        tooltip: {
-          callbacks: {
-            label: (item) => `${item.dataset.label}：${fmt(item.parsed.y)}`
-          }
-        }
-      },
-      scales: {
-        x: {
-          ticks:{font:{size:10},maxRotation:0,autoSkipPadding:8},
-          grid:{display:false}
-        },
-        y: {
-          ticks:{font:{size:11}, callback:v=>fmt(v)},
-          grid:{color:'#ECEEF2'},
-          suggestedMin: minY < 0 ? minY * 1.15 : 0,
-          suggestedMax: maxY * 1.05
-        }
-      }
-    },
-    plugins: [negBgPlugin]
-  });
+function buildGapBar(id,balance,days,mLabel){
+  const gapDays=days.filter((_,i)=>balance[i]<0);
+  const el=document.getElementById(id);
+  if(gapDays.length===0){el.classList.remove('show');return;}
+  const minB=Math.min(...balance),minDay=balance.indexOf(minB)+1;
+  const suggestAmount = LOW - minB;
+  el.classList.add('show');
+  let html=`<strong>⚠ 需要資金調度！</strong>　本月共 <strong>${gapDays.length} 天</strong>出現資金缺口（餘額小於 0），最大缺口 <strong>${fmt(minB)}</strong>（${mLabel}${minDay}日）。建議提前收款或安排短期調度。`;
+  html+=`<div class="suggest-box">
+    <span class="suggest-label">💰 建議調撥金額</span>
+    <span class="suggest-amount">${fmt(suggestAmount)}</span>
+    <span class="suggest-formula">＝ 最大缺口 ${fmt(Math.abs(minB))} ＋ 警戒水位 ${fmt(LOW)}</span>
+  </div>`;
+  html+=`<div class="gap-days">缺口日期：${gapDays.map(d=>`<span class="gap-chip">${mLabel}${d}日</span>`).join('')}</div>`;
+  el.innerHTML=html;
 }
 
-const INCOME_COLORS = ['#0D47A1','#1976D2','#64B5F6','#B3E5FC'];
-const EXPENSE_COLORS = ['#BF360C','#E64A19','#FF8A65','#FFCCBC'];
+function buildAlert(id,balance){
+  const last=balance[balance.length-1];
+  const gapCnt=balance.filter(b=>b<0).length;
+  let bg,tc,msg;
+  if(last<0){bg='#FCEBEB';tc='#A32D2D';msg=`⚠  月底餘額為負數 ${fmt(last)}，資金嚴重不足，需立即調度！`}
+  else if(last<LOW){bg='#FFF3E0';tc='#BF360C';msg=`月底餘額 ${fmt(last)}（低於警戒水位 ${fmt(LOW)}）。`}
+  else{bg='#EAF3DE';tc='#27500A';msg=`月底餘額 ${fmt(last)} 正常。`}
+  if(gapCnt>0&&last>=0) msg+=`　本月曾出現 ${gapCnt} 天資金缺口。`;
+  const el=document.getElementById(id);el.style.background=bg;el.style.color=tc;el.textContent=msg;
+}
 
-function drawDoughnut(canvasId, totals, colors) {
-  const ctx = document.getElementById(canvasId);
-  if (!ctx) return;
-  const labels = Object.keys(totals);
-  const values = labels.map(k => totals[k]);
-  new Chart(ctx, {
-    type: 'doughnut',
-    data: {labels, datasets:[{data:values, backgroundColor:colors, borderWidth:2, borderColor:'#fff'}]},
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {position:'right', labels:{font:{size:11}, boxWidth:12, padding:8}},
-        tooltip: {
-          callbacks: {
-            label: (item) => {
-              const total = item.dataset.data.reduce((a,b)=>a+b,0);
-              const pct = total > 0 ? (item.parsed/total*100).toFixed(1) : 0;
-              return `${item.label}：${fmt(item.parsed)} 仟元（${pct}%）`;
-            }
-          }
-        }
-      },
-      cutout: '55%'
+function buildTrend(canvasId,days,balance){
+  if(charts[canvasId])charts[canvasId].destroy();
+  charts[canvasId]=new Chart(document.getElementById(canvasId),{
+    type:'line',plugins:[gapZonePlugin],
+    data:{labels:days.map(d=>d+'日'),datasets:[
+      {label:'每日餘額',data:balance,borderColor:'#185FA5',backgroundColor:'rgba(24,95,165,0.08)',borderWidth:2,pointBackgroundColor:balance.map(b=>ptColor(b)),pointRadius:balance.map(b=>b<0?5:b<LOW?4:3),fill:true,tension:0.3},
+      {label:'警戒水位',data:Array(days.length).fill(LOW),borderColor:'#E24B4A',borderWidth:1.5,borderDash:[6,4],pointRadius:0,fill:false},
+      {label:'零基線',data:Array(days.length).fill(0),borderColor:'rgba(123,0,0,0.7)',borderWidth:1.5,borderDash:[3,3],pointRadius:0,fill:false},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{if(ctx.datasetIndex>0)return false;const v=ctx.parsed.y;return' '+fmt(v)+(v<0?' 🔴 資金缺口，需調度':'');}}}},
+      scales:{x:{ticks:{font:{size:10},autoSkip:false,maxRotation:0},grid:{color:'rgba(0,0,0,0.05)'}},y:{ticks:{font:{size:10},callback:v=>fmt(v)},grid:{color:'rgba(0,0,0,0.05)'},afterDataLimits:axis=>{if(axis.min>-50000)axis.min=-400000;}}}
     }
   });
 }
 
-// 等 DOM 全部插入後再繪製圖表
-setTimeout(() => {
-  drawTrend('trend-prev', DATA.prev);
-  drawTrend('trend-this', DATA.this);
-  drawDoughnut('income-prev', DATA.prev.income_totals, INCOME_COLORS);
-  drawDoughnut('expense-prev', DATA.prev.expense_totals, EXPENSE_COLORS);
-  drawDoughnut('income-this', DATA.this.income_totals, INCOME_COLORS);
-  drawDoughnut('expense-this', DATA.this.expense_totals, EXPENSE_COLORS);
-}, 0);
-</script>
+function buildTable(tblId,days,wkend,balance,inD,outD){
+  const totalIn=days.map((_,i)=>inD.gen[i]+inD.heat[i]+inD.ec[i]+inD.oth[i]);
+  const totalOut=days.map((_,i)=>outD.gen[i]+outD.heat[i]+outD.ec[i]+outD.oth[i]);
+  const net=days.map((_,i)=>totalIn[i]-totalOut[i]);
+  let html=`<thead><tr>
+    <th class="th-date" rowspan="2">日期</th>
+    <th class="th-in" colspan="5">◀　現金流入　▶</th>
+    <th class="th-out" colspan="5">◀　現金流出　▶</th>
+    <th class="th-net" rowspan="2">當日淨<br>流入(出)</th>
+    <th class="th-bal" rowspan="2">當日<br>銀行存款</th>
+  </tr><tr>
+    <th class="th-in-sub">一般商品收入</th><th class="th-in-sub">加熱菸銷貨款</th><th class="th-in-sub">EC代收款</th><th class="th-in-sub">其他收入</th><th class="th-in-sub">流入合計</th>
+    <th class="th-out-sub">一般商品進貨</th><th class="th-out-sub">加熱菸進貨款</th><th class="th-out-sub">EC代付款</th><th class="th-out-sub">其他支出</th><th class="th-out-sub">流出合計</th>
+  </tr></thead><tbody>`;
+  days.forEach((d,i)=>{
+    const bal=balance[i],netV=net[i],isWk=wkend[i];
+    const balClass=bal<0?'gap-cell':bal<LOW?'warn-cell':'';
+    const netClass=netV>0?'net-pos':netV<0?'net-neg':'';
+    html+=`<tr class="${isWk?'weekend':''}">
+      <td>${d}${isWk?'<br><span style="font-size:9px;color:#9AA8B8">休</span>':''}</td>
+      <td>${fmtN(inD.gen[i])}</td><td>${fmtN(inD.heat[i])}</td><td>${fmtN(inD.ec[i])}</td><td>${fmtN(inD.oth[i])}</td>
+      <td style="font-weight:600;color:#185FA5">${fmtN(totalIn[i])}</td>
+      <td>${fmtN(outD.gen[i])}</td><td>${fmtN(outD.heat[i])}</td><td>${fmtN(outD.ec[i])}</td><td>${fmtN(outD.oth[i])}</td>
+      <td style="font-weight:600;color:#A32D2D">${fmtN(totalOut[i])}</td>
+      <td class="${netClass}">${fmtN(netV)}</td>
+      <td class="${balClass}">${fmt(bal)}</td>
+    </tr>`;
+  });
+  const sTIn=[inD.gen,inD.heat,inD.ec,inD.oth].map(a=>a.reduce((s,v)=>s+v,0));
+  const sTOut=[outD.gen,outD.heat,outD.ec,outD.oth].map(a=>a.reduce((s,v)=>s+v,0));
+  const sNet=sTIn.reduce((s,v)=>s+v,0)-sTOut.reduce((s,v)=>s+v,0);
+  html+=`<tr class="total-row"><td>合計</td>${sTIn.map(v=>`<td>${fmtN(v)}</td>`).join('')}<td>${fmtN(sTIn.reduce((s,v)=>s+v,0))}</td>${sTOut.map(v=>`<td>${fmtN(v)}</td>`).join('')}<td>${fmtN(sTOut.reduce((s,v)=>s+v,0))}</td><td class="${sNet>=0?'net-pos':'net-neg'}">${fmtN(sNet)}</td><td>${fmt(balance[balance.length-1])}</td></tr></tbody>`;
+  document.getElementById(tblId).innerHTML=html;
+}
 
+function buildPie(canvasId,legId,data,labels,colors){
+  if(charts[canvasId])charts[canvasId].destroy();
+  const total=data.reduce((a,b)=>a+b,0);
+  document.getElementById(legId).innerHTML=labels.map((l,i)=>`<span><i style="background:${colors[i]}"></i>${l} ${(data[i]/total*100).toFixed(0)}%</span>`).join('');
+  charts[canvasId]=new Chart(document.getElementById(canvasId),{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+fmt(ctx.parsed)+' ('+(ctx.parsed/total*100).toFixed(1)+'%)'}}}}});
+}
+
+function getInCat(d){return[d.gen,d.heat,d.ec,d.oth].map(a=>a.reduce((s,v)=>s+v,0));}
+function getOutCat(d){return[d.gen,d.heat,d.ec,d.oth].map(a=>a.reduce((s,v)=>s+v,0));}
+
+function buildApr(){buildAlert('alert-apr',aprBalance);buildGapBar('gap-apr',aprBalance,aprDays,'4月');buildKpis('kpis-apr',aprBalance);buildTrend('chart-apr',aprDays,aprBalance);buildTable('tbl-apr',aprDays,aprWkend,aprBalance,aprIn,aprOut);buildPie('pie-apr-in','leg-apr-in',getInCat(aprIn),inLabels,inColors);buildPie('pie-apr-out','leg-apr-out',getOutCat(aprOut),outLabels,outColors);}
+function buildMay(){buildAlert('alert-may',mayBalance);buildGapBar('gap-may',mayBalance,mayDays,'5月');buildKpis('kpis-may',mayBalance);buildTrend('chart-may',mayDays,mayBalance);buildTable('tbl-may',mayDays,mayWkend,mayBalance,mayIn,mayOut);buildPie('pie-may-in','leg-may-in',getInCat(mayIn),inLabels,inColors);buildPie('pie-may-out','leg-may-out',getOutCat(mayOut),outLabels,outColors);}
+
+function updateTabAlerts(){
+  const aprAlert=aprBalance.some(b=>b<0);
+  const mayAlert=mayBalance.some(b=>b<0);
+  document.getElementById('tab-apr').classList.toggle('has-alert',aprAlert);
+  document.getElementById('tab-may').classList.toggle('has-alert',mayAlert);
+  const aprBadge=document.querySelector('#tab-apr .alert-badge');
+  const mayBadge=document.querySelector('#tab-may .alert-badge');
+  if(!aprAlert&&aprBadge) aprBadge.remove();
+  if(!mayAlert&&mayBadge) mayBadge.remove();
+}
+
+buildApr();buildMay();updateTabAlerts();
+</script>
 </body>
 </html>
